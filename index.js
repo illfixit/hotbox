@@ -2,6 +2,7 @@ var express = require("express");
 var morgan = require("morgan");
 var path = require("path");
 var fileupload = require("express-fileupload");
+var fs = require('fs');
 
 var { networkInterfaces } = require('os');
 
@@ -11,6 +12,11 @@ app.use(morgan("short"));
 app.use(fileupload());
 
 var staticPath = path.join(__dirname, "files");
+
+if (!fs.existsSync(staticPath)){
+    fs.mkdirSync(staticPath);
+}
+
 app.use(express.static(staticPath));
 
 var nets = networkInterfaces()
